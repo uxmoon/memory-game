@@ -17,7 +17,7 @@ export default function App() {
       .then((response) => setData(response.entries))
   }, [])
 
-  const handleName = () => {
+  const handleStartGame = () => {
     if (inputRef.current.value === '') return
     setName(inputRef.current.value)
     const cloneData = [...data, ...data].sort(() => Math.random() - 0.5)
@@ -32,21 +32,23 @@ export default function App() {
         <>
           <p>Hi! Before we start the game please complete your name below.</p>
           <input type='text' defaultValue={name} ref={inputRef} />
-          <button onClick={handleName}>Start game</button>
+          <button onClick={handleStartGame}>Start game</button>
         </>
       ) : (
         <p>Awesome! Let&apos;s play!</p>
       )}
       {start ? (
-        cards.map((card) => (
-          <div key={crypto.randomUUID()}>
-            <img
-              src={card.fields.image.url}
-              alt={card.fields.image.title}
-              width={100}
-            />
-          </div>
-        ))
+        <div className='grid'>
+          {cards.map((card) => (
+            <div key={crypto.randomUUID()}>
+              <img
+                src={card.fields.image.url}
+                alt={card.fields.image.title}
+                width={100}
+              />
+            </div>
+          ))}
+        </div>
       ) : (
         <p>Type a name before begin</p>
       )}
