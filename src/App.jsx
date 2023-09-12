@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import Card from './components/Card'
 
 export default function App() {
   // hooks
@@ -41,11 +42,7 @@ export default function App() {
         <div className='grid'>
           {cards.map((card) => (
             <div key={crypto.randomUUID()}>
-              <img
-                src={card.fields.image.url}
-                alt={card.fields.image.title}
-                width={100}
-              />
+              <Card card={card} />
             </div>
           ))}
         </div>

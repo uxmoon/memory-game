@@ -6,3 +6,9 @@
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
 }
+
+.front {
+  width: 200px;
+  height: 198px;
+  object-fit: cover;
+}
