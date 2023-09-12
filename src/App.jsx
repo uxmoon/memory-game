@@ -7,6 +7,10 @@ export default function App() {
   const [data, setData] = useState([])
   const [cards, setCards] = useState([])
   const [start, setStart] = useState(false)
+  const [cardOne, setCardOne] = useState(null)
+  const [cardTwo, setCardTwo] = useState(null)
+  const [failed, setFailed] = useState(0)
+  const [correct, setCorrect] = useState(0)
   const inputRef = useRef()
 
   // data fetching
@@ -17,6 +21,33 @@ export default function App() {
       .then((response) => response.json())
       .then((response) => setData(response.entries))
   }, [])
+
+  // handle user selection
+  const handleSelection = (card) => {
+    // console.log(card.meta.slug)
+    cardOne ? setCardTwo(card.meta.slug) : setCardOne(card.meta.slug)
+  }
+
+  // compare selected cards
+  useEffect(() => {
+    if (cardOne && cardTwo) {
+      if (cardOne === cardTwo) {
+        console.log('the cards macth')
+        setCorrect((prevCorrect) => prevCorrect + 1)
+        resetTurn()
+      } else {
+        console.log('the cards do not match')
+        setFailed((prevFailed) => prevFailed + 1)
+        resetTurn()
+      }
+    }
+  }, [cardOne, cardTwo])
+
+  // reset selection
+  const resetTurn = () => {
+    setCardOne(null)
+    setCardTwo(null)
+  }
 
   const handleStartGame = () => {
     if (inputRef.current.value === '') return
@@ -39,13 +70,18 @@ export default function App() {
         <p>Awesome! Let&apos;s play!</p>
       )}
       {start ? (
-        <div className='grid'>
-          {cards.map((card) => (
-            <div key={crypto.randomUUID()}>
-              <Card card={card} />
-            </div>
-          ))}
-        </div>
+        <>
+          <p>
+            Correct attempts: {correct} Failed attempts: {failed}
+          </p>
+          <div className='grid'>
+            {cards.map((card) => (
+              <div key={crypto.randomUUID()}>
+                <Card card={card} handleSelection={handleSelection} />
+              </div>
+            ))}
+          </div>
+        </>
       ) : (
         <p>Type a name before begin</p>
       )}

@@ -1,16 +1,22 @@
 import PropTypes from 'prop-types'
 
-export default function Card({
-  card: {
-    fields: {
-      image: { title, url },
-    },
-  },
-}) {
+export default function Card({ card, handleSelection }) {
+  const handleClick = () => {
+    handleSelection(card)
+  }
   return (
     <div>
-      <img src={url} alt={title} className='front' />
-      <img src='img/cover.png' alt='card back' className='back' />
+      <img
+        src={card.fields.image.url}
+        alt={card.fields.image.title}
+        className='front'
+      />
+      <img
+        src='img/cover.png'
+        alt='card back'
+        className='back'
+        onClick={handleClick}
+      />
     </div>
   )
 }
@@ -24,4 +30,5 @@ Card.propTypes = {
       }),
     }),
   }),
+  handleSelection: PropTypes.func,
 }
