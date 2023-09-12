@@ -86,7 +86,13 @@ export default function App() {
           <div className='grid'>
             {cards.map((card) => (
               <div key={crypto.randomUUID()}>
-                <Card card={card} handleSelection={handleSelection} />
+                <Card
+                  card={card}
+                  handleSelection={handleSelection}
+                  flipped={
+                    card === cardOne || card === cardTwo || card.meta.private
+                  }
+                />
               </div>
             ))}
           </div>

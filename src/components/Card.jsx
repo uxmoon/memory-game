@@ -1,22 +1,24 @@
 import PropTypes from 'prop-types'
 
-export default function Card({ card, handleSelection }) {
+export default function Card({ card, handleSelection, flipped }) {
   const handleClick = () => {
     handleSelection(card)
   }
   return (
-    <div>
-      <img
-        src={card.fields.image.url}
-        alt={card.fields.image.title}
-        className='front'
-      />
-      <img
-        src='img/cover.png'
-        alt='card back'
-        className='back'
-        onClick={handleClick}
-      />
+    <div className='card'>
+      <div className={flipped ? 'flipped' : ''}>
+        <img
+          src={card.fields.image.url}
+          alt={card.fields.image.title}
+          className='front'
+        />
+        <img
+          src='img/cover.png'
+          alt='card back'
+          className='back'
+          onClick={handleClick}
+        />
+      </div>
     </div>
   )
 }
@@ -31,4 +33,5 @@ Card.propTypes = {
     }),
   }),
   handleSelection: PropTypes.func,
+  flipped: PropTypes.bool,
 }
