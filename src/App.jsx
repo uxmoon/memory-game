@@ -10,8 +10,9 @@ export default function App() {
   const [cardOne, setCardOne] = useState(null)
   const [cardTwo, setCardTwo] = useState(null)
   const [failed, setFailed] = useState(0)
-  const [correct, setCorrect] = useState(0)
+  const [success, setSuccess] = useState(0)
   const [disabled, setDisabled] = useState(false)
+  const [finished, setFinished] = useState(false)
   const inputRef = useRef()
 
   // data fetching
@@ -45,7 +46,7 @@ export default function App() {
             }
           })
         })
-        setCorrect((prevCorrect) => prevCorrect + 1)
+        setSuccess((prevSuccess) => prevSuccess + 1)
         resetTurn()
       } else {
         setFailed((prevFailed) => prevFailed + 1)
@@ -60,6 +61,13 @@ export default function App() {
     setCardTwo(null)
     setDisabled(false)
   }
+
+  // finish game and show message
+  useEffect(() => {
+    if (success === 9) {
+      alert('You won')
+    }
+  }, [success])
 
   const handleStartGame = () => {
     if (inputRef.current.value === '') return
@@ -86,7 +94,7 @@ export default function App() {
       {start ? (
         <>
           <p>
-            Successful attempts: {correct} Failed attempts: {failed}
+            Successful attempts: {success} Failed attempts: {failed}
           </p>
           <div className='grid'>
             {cards.map((card) => (
