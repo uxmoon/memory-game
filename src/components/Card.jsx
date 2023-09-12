@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types'
 
-export default function Card({ card, handleSelection, flipped }) {
+export default function Card({ card, handleSelection, flipped, disabled }) {
   const handleClick = () => {
-    handleSelection(card)
+    if (!disabled) {
+      handleSelection(card)
+    }
   }
   return (
     <div className='card'>
@@ -34,4 +36,5 @@ Card.propTypes = {
   }),
   handleSelection: PropTypes.func,
   flipped: PropTypes.bool,
+  disabled: PropTypes.bool,
 }

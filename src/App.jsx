@@ -11,6 +11,7 @@ export default function App() {
   const [cardTwo, setCardTwo] = useState(null)
   const [failed, setFailed] = useState(0)
   const [correct, setCorrect] = useState(0)
+  const [disabled, setDisabled] = useState(false)
   const inputRef = useRef()
 
   // data fetching
@@ -30,6 +31,7 @@ export default function App() {
   // compare selected cards
   useEffect(() => {
     if (cardOne && cardTwo) {
+      setDisabled(true)
       if (cardOne.fields.image.url === cardTwo.fields.image.url) {
         setCards((prevCards) => {
           return prevCards.map((card) => {
@@ -56,6 +58,7 @@ export default function App() {
   const resetTurn = () => {
     setCardOne(null)
     setCardTwo(null)
+    setDisabled(false)
   }
 
   const handleStartGame = () => {
@@ -83,7 +86,7 @@ export default function App() {
       {start ? (
         <>
           <p>
-            Correct attempts: {correct} Failed attempts: {failed}
+            Successful attempts: {correct} Failed attempts: {failed}
           </p>
           <div className='grid'>
             {cards.map((card) => (
@@ -92,6 +95,7 @@ export default function App() {
                   card={card}
                   handleSelection={handleSelection}
                   flipped={card === cardOne || card === cardTwo || card.matched}
+                  disabled={disabled}
                 />
               </div>
             ))}
