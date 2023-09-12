@@ -47,7 +47,7 @@ export default function App() {
         resetTurn()
       } else {
         setFailed((prevFailed) => prevFailed + 1)
-        resetTurn()
+        setTimeout(() => resetTurn(), 1000)
       }
     }
   }, [cardOne, cardTwo])
@@ -61,7 +61,9 @@ export default function App() {
   const handleStartGame = () => {
     if (inputRef.current.value === '') return
     setName(inputRef.current.value)
-    const cloneData = [...data, ...data].sort(() => Math.random() - 0.5)
+    const cloneData = [...data, ...data]
+      .sort(() => Math.random() - 0.5)
+      .map((card) => ({ ...card, id: crypto.randomUUID(), matched: false }))
     setCards(cloneData)
     setStart(true)
   }
@@ -85,13 +87,11 @@ export default function App() {
           </p>
           <div className='grid'>
             {cards.map((card) => (
-              <div key={crypto.randomUUID()}>
+              <div key={card.id}>
                 <Card
                   card={card}
                   handleSelection={handleSelection}
-                  flipped={
-                    card === cardOne || card === cardTwo || card.meta.private
-                  }
+                  flipped={card === cardOne || card === cardTwo || card.matched}
                 />
               </div>
             ))}
