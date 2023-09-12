@@ -24,19 +24,28 @@ export default function App() {
 
   // handle user selection
   const handleSelection = (card) => {
-    // console.log(card.meta.slug)
-    cardOne ? setCardTwo(card.meta.slug) : setCardOne(card.meta.slug)
+    cardOne ? setCardTwo(card) : setCardOne(card)
   }
 
   // compare selected cards
   useEffect(() => {
     if (cardOne && cardTwo) {
-      if (cardOne === cardTwo) {
-        console.log('the cards macth')
+      if (cardOne.fields.image.url === cardTwo.fields.image.url) {
+        setCards((prevCards) => {
+          return prevCards.map((card) => {
+            if (card.fields.image.url === cardOne.fields.image.url) {
+              return {
+                ...card,
+                matched: true,
+              }
+            } else {
+              return card
+            }
+          })
+        })
         setCorrect((prevCorrect) => prevCorrect + 1)
         resetTurn()
       } else {
-        console.log('the cards do not match')
         setFailed((prevFailed) => prevFailed + 1)
         resetTurn()
       }
