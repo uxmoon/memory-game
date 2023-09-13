@@ -108,6 +108,18 @@ export default function App() {
     )
   }
 
+  const handleGameReset = () => {
+    const sortCards = cards
+      .sort(() => Math.random() - 0.5)
+      .map((card) => ({ ...card, id: crypto.randomUUID(), matched: false }))
+    setCards(sortCards)
+    setFailedAttempts(0)
+    setSuccessAttempts(0)
+    setIsGameFinished(false)
+    setPickCardOne(null)
+    setPickCardTwo(null)
+  }
+
   return (
     <div className='wrapper'>
       <h1>Memory Game</h1>
@@ -131,6 +143,19 @@ export default function App() {
         </>
       ) : (
         ''
+      )}
+
+      {isGameFinished && (
+        <div className='banner'>
+          <h2>Game over {playerName}!</h2>
+          <p>
+            You finish the game in {successAttempts + failedAttempts} attempts.
+          </p>
+          <p>Do you want play again?</p>
+          <button className='banner__button' onClick={handleGameReset}>
+            Start new game
+          </button>
+        </div>
       )}
 
       {isPlaying ? (
@@ -161,9 +186,6 @@ export default function App() {
         </>
       ) : (
         ''
-      )}
-      {isGameFinished && (
-        <p>You finish the game {playerName}! Do you want to play again?</p>
       )}
     </div>
   )
