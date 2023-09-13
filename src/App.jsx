@@ -1,29 +1,41 @@
 import { useEffect, useRef, useState } from 'react'
 import Card from './components/Card'
+import Alert from './components/Alert'
 
 export default function App() {
   // hooks
-  const [isLoading, setIsLoading] = useState(true)
-  const [name, setName] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState()
   const [data, setData] = useState([])
   const [cards, setCards] = useState([])
-  const [start, setStart] = useState(false)
-  const [cardOne, setCardOne] = useState(null)
-  const [cardTwo, setCardTwo] = useState(null)
-  const [failed, setFailed] = useState(0)
-  const [success, setSuccess] = useState(0)
-  const [disabled, setDisabled] = useState(false)
-  const [isFinished, setIsFinished] = useState(false)
+  const [playerName, setPlayerName] = useState('')
+  const [isPlaying, setisPlaying] = useState(false)
+  const [pickCardOne, setPickCardOne] = useState(null)
+  const [pickCardTwo, setPickCardTwo] = useState(null)
+  const [failedAttempts, setFailedAttempts] = useState(0)
+  const [successAttempts, setSuccessAttempts] = useState(0)
+  const [isDisabled, setIsDisabled] = useState(false)
+  const [isGameFinished, setIsGameFinished] = useState(false)
   const inputRef = useRef()
 
   // data fetching
   useEffect(() => {
     setIsLoading(true)
+    setError(undefined)
+    const controller = new AbortController()
     fetch(
-      'https://fed-team.modyo.cloud/api/content/spaces/animals/types/game/entries?per_page=9'
+      'https://fed-team.modyo.cloud/api/content/spaces/animals/types/game/entries?per_page=9',
+      { signal: controller.signal }
     )
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json()
+        } else {
+          return Promise.reject(response)
+        }
+      })
       .then((response) => setData(response.entries))
+      .catch((err) => setError(err))
       .finally(() => {
         setIsLoading(false)
       })
@@ -31,17 +43,17 @@ export default function App() {
 
   // handle user selection
   const handleSelection = (card) => {
-    cardOne ? setCardTwo(card) : setCardOne(card)
+    pickCardOne ? setPickCardTwo(card) : setPickCardOne(card)
   }
 
   // compare selected cards
   useEffect(() => {
-    if (cardOne && cardTwo) {
-      setDisabled(true)
-      if (cardOne.fields.image.url === cardTwo.fields.image.url) {
+    if (pickCardOne && pickCardTwo) {
+      setIsDisabled(true)
+      if (pickCardOne.fields.image.url === pickCardTwo.fields.image.url) {
         setCards((prevCards) => {
           return prevCards.map((card) => {
-            if (card.fields.image.url === cardOne.fields.image.url) {
+            if (card.fields.image.url === pickCardOne.fields.image.url) {
               return {
                 ...card,
                 matched: true,
@@ -51,61 +63,78 @@ export default function App() {
             }
           })
         })
-        setSuccess((prevSuccess) => prevSuccess + 1)
+        setSuccessAttempts((prevSuccess) => prevSuccess + 1)
         resetTurn()
       } else {
-        setFailed((prevFailed) => prevFailed + 1)
+        setFailedAttempts((prevFailed) => prevFailed + 1)
         setTimeout(() => resetTurn(), 1000)
       }
     }
-  }, [cardOne, cardTwo])
+  }, [pickCardOne, pickCardTwo])
 
   // reset selection
   const resetTurn = () => {
-    setCardOne(null)
-    setCardTwo(null)
-    setDisabled(false)
+    setPickCardOne(null)
+    setPickCardTwo(null)
+    setIsDisabled(false)
   }
 
   // finish game and show message
   useEffect(() => {
-    if (success === 9) {
-      alert('You won')
+    if (successAttempts === 9) {
+      setIsGameFinished(true)
     }
-  }, [success])
+  }, [successAttempts])
 
   const handleStartGame = () => {
     if (inputRef.current.value === '') return
-    setName(inputRef.current.value)
+    setPlayerName(inputRef.current.value)
     const cloneData = [...data, ...data]
       .sort(() => Math.random() - 0.5)
       .map((card) => ({ ...card, id: crypto.randomUUID(), matched: false }))
     setCards(cloneData)
-    setStart(true)
+    setisPlaying(true)
+  }
+
+  if (error != null) {
+    return (
+      <>
+        <div className='container mx-auto'>
+          <h1>Memory Game</h1>
+          <Alert />
+        </div>
+      </>
+    )
   }
 
   return (
     <div className='container mx-auto'>
       <h1>Memory Game</h1>
-      {isLoading ? (
-        <h2>Loading game...</h2>
-      ) : (
+      {isLoading ? <h2>Loading game...</h2> : ''}
+      {!isLoading && !isPlaying ? (
         <>
-          <p>Hi! Before we start the game please complete your name below.</p>
-          <input type='text' defaultValue={name} ref={inputRef} />
-          <button onClick={handleStartGame}>Start game</button>
+          <p>
+            Welcome! Before we start the game please complete your name below.
+          </p>
+          <input
+            type='text'
+            defaultValue={playerName}
+            ref={inputRef}
+            className='form__input'
+          />
+          <button onClick={handleStartGame} className='form__button'>
+            Start game
+          </button>
         </>
-      )}
-      {name.length ? <p>Awesome! Let&apos;s play!</p> : ''}
-      {isFinished ? (
-        <p>You finish the game {name}! Do you want to play again?</p>
       ) : (
         ''
       )}
-      {start ? (
+
+      {isPlaying ? (
         <>
           <p>
-            Successful attempts: {success} Failed attempts: {failed}
+            Successful attempts: {successAttempts} Failed attempts:{' '}
+            {failedAttempts}
           </p>
           <div className='grid'>
             {cards.map((card) => (
@@ -113,8 +142,10 @@ export default function App() {
                 <Card
                   card={card}
                   handleSelection={handleSelection}
-                  flipped={card === cardOne || card === cardTwo || card.matched}
-                  disabled={disabled}
+                  flipped={
+                    card === pickCardOne || card === pickCardTwo || card.matched
+                  }
+                  isDisabled={isDisabled}
                 />
               </div>
             ))}
@@ -122,6 +153,9 @@ export default function App() {
         </>
       ) : (
         ''
+      )}
+      {isGameFinished && (
+        <p>You finish the game {playerName}! Do you want to play again?</p>
       )}
     </div>
   )
