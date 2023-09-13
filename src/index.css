@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply bg-indigo-100;
+  @apply bg-indigo-100 py-2;
 }
 
 .wrapper {
@@ -11,6 +11,7 @@ body {
 }
 
 h1 {
+  color: red;
   @apply text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight text-center;
 }
 
@@ -18,21 +19,9 @@ p {
   @apply mt-2 text-lg text-slate-700 text-center;
 }
 
-.alert {
-  @apply bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded;
-}
-
-.alert .alert__title {
-  @apply font-bold;
-}
-
-.alert .alert__text {
-  @apply block sm:inline;
-}
-
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1rem;
   @apply mt-2;
 }

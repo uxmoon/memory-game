@@ -1,3 +1,5 @@
+import './Alert.css'
+
 export default function Alert() {
   return (
     <div className='alert' role='alert'>

@@ -1,0 +1,11 @@
+.alert {
+  @apply bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded text-center mt-2;
+}
+
+.alert .alert__title {
+  @apply font-bold;
+}
+
+.alert .alert__text {
+  @apply block sm:inline;
+}
