@@ -86,7 +86,8 @@ export default function App() {
     }
   }, [successAttempts])
 
-  const handleStartGame = () => {
+  const handleStartGame = (e) => {
+    e.preventDefault()
     if (inputRef.current.value === '') return
     setPlayerName(inputRef.current.value)
     const cloneData = [...data, ...data]
@@ -116,15 +117,17 @@ export default function App() {
           <p>
             Welcome! Before we start the game please complete your name below.
           </p>
-          <input
-            type='text'
-            defaultValue={playerName}
-            ref={inputRef}
-            className='form__input'
-          />
-          <button onClick={handleStartGame} className='form__button'>
-            Start game
-          </button>
+          <form onSubmit={handleStartGame} className='form'>
+            <input
+              type='text'
+              defaultValue={playerName}
+              ref={inputRef}
+              className='form__input'
+            />
+            <button type='submit' className='form__button'>
+              Start game
+            </button>
+          </form>
         </>
       ) : (
         ''

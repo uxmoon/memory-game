@@ -37,23 +37,32 @@
   border-radius: 0.5rem;
 }
 
-.card .front {
+.card .card__front {
   transform: rotateY(90deg);
   position: absolute;
   transition: all ease-in 0.2s;
 }
 
-.flipped .front {
+.card--flipped .card__front {
   transform: rotateY(0deg);
   transition-delay: 0.2s;
 }
 
-.card .back {
+.card .card__back {
   transition: all ease-in 0.2s;
   transition-delay: 0.2s;
 }
 
-.flipped .back {
+.card--flipped .card__back {
   transform: rotateY(90deg);
   transition-delay: 0s;
+}
+
+@layer components {
+  .form__input {
+    @apply appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:drop-shadow;
+  }
+  .form__button {
+    @apply py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+  }
 }
