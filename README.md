@@ -4,7 +4,7 @@ Made with [React](https://react.dev/) using [Vite](https://vitejs.dev/) and depl
 
 ## Demo
 
-[View demo](https://memory-game-eight-iota.vercel.app/)
+[View demo](https://memory-game-uxmoon.vercel.app/)
 
 ## Usage
 
