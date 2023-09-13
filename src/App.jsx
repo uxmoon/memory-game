@@ -3,6 +3,7 @@ import Card from './components/Card'
 
 export default function App() {
   // hooks
+  const [isLoading, setIsLoading] = useState(true)
   const [name, setName] = useState('')
   const [data, setData] = useState([])
   const [cards, setCards] = useState([])
@@ -12,16 +13,20 @@ export default function App() {
   const [failed, setFailed] = useState(0)
   const [success, setSuccess] = useState(0)
   const [disabled, setDisabled] = useState(false)
-  const [finished, setFinished] = useState(false)
+  const [isFinished, setIsFinished] = useState(false)
   const inputRef = useRef()
 
   // data fetching
   useEffect(() => {
+    setIsLoading(true)
     fetch(
       'https://fed-team.modyo.cloud/api/content/spaces/animals/types/game/entries?per_page=9'
     )
       .then((response) => response.json())
       .then((response) => setData(response.entries))
+      .finally(() => {
+        setIsLoading(false)
+      })
   }, [])
 
   // handle user selection
@@ -82,14 +87,20 @@ export default function App() {
   return (
     <div className='container mx-auto'>
       <h1>Memory Game</h1>
-      {!name.length ? (
+      {isLoading ? (
+        <h2>Loading game...</h2>
+      ) : (
         <>
           <p>Hi! Before we start the game please complete your name below.</p>
           <input type='text' defaultValue={name} ref={inputRef} />
           <button onClick={handleStartGame}>Start game</button>
         </>
+      )}
+      {name.length ? <p>Awesome! Let&apos;s play!</p> : ''}
+      {isFinished ? (
+        <p>You finish the game {name}! Do you want to play again?</p>
       ) : (
-        <p>Awesome! Let&apos;s play!</p>
+        ''
       )}
       {start ? (
         <>
@@ -110,7 +121,7 @@ export default function App() {
           </div>
         </>
       ) : (
-        <p>Type a name before begin</p>
+        ''
       )}
     </div>
   )
