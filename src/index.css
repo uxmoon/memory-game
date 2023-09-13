@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply bg-indigo-100;
+}
+
 .alert {
   @apply bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded;
 }
@@ -20,12 +24,6 @@
   gap: 1rem;
 }
 
-.front {
-  width: 200px;
-  height: 198px;
-  object-fit: cover;
-}
-
 .card {
   position: relative;
 }
@@ -33,14 +31,18 @@
 .card img {
   width: 100%;
   display: block;
-  border: 2px solid #000;
-  border-radius: 0.5rem;
 }
 
-.card .card__front {
+.card__front {
+  width: 200px;
+  height: 300px;
+  object-fit: cover;
   transform: rotateY(90deg);
   position: absolute;
   transition: all ease-in 0.2s;
+  border-radius: 1rem;
+  overflow: hidden;
+  @apply drop-shadow-lg border-8 border-neutral-50 rounded-lg bg-slate-100;
 }
 
 .card--flipped .card__front {
@@ -48,9 +50,13 @@
   transition-delay: 0.2s;
 }
 
-.card .card__back {
+.card__back {
   transition: all ease-in 0.2s;
   transition-delay: 0.2s;
+  width: 200px;
+  height: 300px;
+  overflow: hidden;
+  @apply drop-shadow-lg border-8 border-neutral-50 rounded-lg bg-slate-100;
 }
 
 .card--flipped .card__back {

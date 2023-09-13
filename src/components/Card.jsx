@@ -14,12 +14,7 @@ export default function Card({ card, handleSelection, flipped, isDisabled }) {
           alt={card.fields.image.title}
           className='card__front'
         />
-        <img
-          src='img/cover.png'
-          alt='card back'
-          className='card__back'
-          onClick={handleClick}
-        />
+        <div className='card__back' onClick={handleClick}></div>
       </div>
     </div>
   )
