@@ -1,0 +1,9 @@
+.score {
+  @apply text-center;
+}
+.score__success {
+  @apply text-green-700 font-bold mx-2;
+}
+.score {
+  @apply text-center text-red-700 font-bold mx-2;
+}

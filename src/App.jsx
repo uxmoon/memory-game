@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import Card from './components/Card'
 import Alert from './components/Alert'
+import Banner from './components/Banner'
+import Score from './components/Score'
 
 export default function App() {
   // hooks
@@ -86,6 +88,7 @@ export default function App() {
     }
   }, [successAttempts])
 
+  // start game
   const handleStartGame = (e) => {
     e.preventDefault()
     if (inputRef.current.value === '') return
@@ -97,6 +100,7 @@ export default function App() {
     setisPlaying(true)
   }
 
+  // display error message
   if (error != null) {
     return (
       <>
@@ -108,6 +112,7 @@ export default function App() {
     )
   }
 
+  // reset game
   const handleGameReset = () => {
     const sortCards = cards
       .sort(() => Math.random() - 0.5)
@@ -146,29 +151,20 @@ export default function App() {
       )}
 
       {isGameFinished && (
-        <div className='banner'>
-          <h2>Game over {playerName}!</h2>
-          <p>
-            You finish the game in {successAttempts + failedAttempts} attempts.
-          </p>
-          <p>Do you want play again?</p>
-          <button className='banner__button' onClick={handleGameReset}>
-            Start new game
-          </button>
-        </div>
+        <Banner
+          playerName={playerName}
+          successAttempts={successAttempts}
+          failedAttempts={failedAttempts}
+          handleGameReset={handleGameReset}
+        />
       )}
 
       {isPlaying ? (
         <>
-          <p className='score'>
-            <span className='score__success'>
-              Successful attempts: {successAttempts}
-            </span>
-            <span className='score__failed'>
-              Failed attempts:
-              {failedAttempts}
-            </span>
-          </p>
+          <Score
+            successAttempts={successAttempts}
+            failedAttempts={failedAttempts}
+          />
           <div className='card-grid'>
             {cards.map((card) => (
               <div key={card.id}>
