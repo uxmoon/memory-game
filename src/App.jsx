@@ -100,7 +100,7 @@ export default function App() {
   if (error != null) {
     return (
       <>
-        <div className='container mx-auto'>
+        <div className='wrapper'>
           <h1>Memory Game</h1>
           <Alert />
         </div>
@@ -109,9 +109,9 @@ export default function App() {
   }
 
   return (
-    <div className='container mx-auto'>
+    <div className='wrapper'>
       <h1>Memory Game</h1>
-      {isLoading ? <h2>Loading game...</h2> : ''}
+      {isLoading ? <p>Loading game...</p> : ''}
       {!isLoading && !isPlaying ? (
         <>
           <p>
@@ -135,11 +135,16 @@ export default function App() {
 
       {isPlaying ? (
         <>
-          <p>
-            Successful attempts: {successAttempts} Failed attempts:{' '}
-            {failedAttempts}
+          <p className='score'>
+            <span className='score__success'>
+              Successful attempts: {successAttempts}
+            </span>
+            <span className='score__failed'>
+              Failed attempts:
+              {failedAttempts}
+            </span>
           </p>
-          <div className='grid'>
+          <div className='card-grid'>
             {cards.map((card) => (
               <div key={card.id}>
                 <Card

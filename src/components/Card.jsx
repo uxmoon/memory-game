@@ -9,9 +9,8 @@ export default function Card({ card, handleSelection, flipped, isDisabled }) {
   return (
     <div className='card'>
       <div className={flipped ? 'card--flipped' : ''}>
-        <img
-          src={card.fields.image.url}
-          alt={card.fields.image.title}
+        <div
+          style={{ backgroundImage: `url(${card.fields.image.url})` }}
           className='card__front'
         />
         <div className='card__back' onClick={handleClick}></div>

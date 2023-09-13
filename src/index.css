@@ -6,6 +6,18 @@ body {
   @apply bg-indigo-100;
 }
 
+.wrapper {
+  @apply container mx-auto px-4;
+}
+
+h1 {
+  @apply text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight text-center;
+}
+
+p {
+  @apply mt-2 text-lg text-slate-700 text-center;
+}
+
 .alert {
   @apply bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded;
 }
@@ -18,31 +30,28 @@ body {
   @apply block sm:inline;
 }
 
-.grid {
+.card-grid {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 1rem;
+  @apply mt-2;
 }
 
 .card {
-  position: relative;
+  @apply relative;
 }
 
 .card img {
-  width: 100%;
-  display: block;
+  @apply w-full block;
 }
 
 .card__front {
   width: 200px;
   height: 300px;
-  object-fit: cover;
   transform: rotateY(90deg);
-  position: absolute;
   transition: all ease-in 0.2s;
-  border-radius: 1rem;
-  overflow: hidden;
-  @apply drop-shadow-lg border-8 border-neutral-50 rounded-lg bg-slate-100;
+  @apply absolute drop-shadow-lg border-8 border-neutral-50
+    rounded-lg bg-slate-100 overflow-hidden bg-no-repeat bg-center bg-cover;
 }
 
 .card--flipped .card__front {
@@ -55,8 +64,7 @@ body {
   transition-delay: 0.2s;
   width: 200px;
   height: 300px;
-  overflow: hidden;
-  @apply drop-shadow-lg border-8 border-neutral-50 rounded-lg bg-slate-100;
+  @apply drop-shadow-lg border-8 border-neutral-50 rounded-lg bg-indigo-400 overflow-hidden cursor-pointer;
 }
 
 .card--flipped .card__back {
@@ -64,11 +72,26 @@ body {
   transition-delay: 0s;
 }
 
+.form {
+  @apply mt-2 text-center;
+}
+
 @layer components {
   .form__input {
-    @apply appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:drop-shadow;
+    /* @apply appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:drop-shadow me-2; */
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 me-2;
   }
   .form__button {
     @apply py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
   }
+}
+
+.score {
+  @apply text-center;
+}
+.score__success {
+  @apply text-green-700 font-bold mx-2;
+}
+.score {
+  @apply text-center text-red-700 font-bold mx-2;
 }
