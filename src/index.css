@@ -1,6 +1,18 @@
-/* @tailwind base;
+@tailwind base;
 @tailwind components;
-@tailwind utilities; */
+@tailwind utilities;
+
+.alert {
+  @apply bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded;
+}
+
+.alert .alert__title {
+  @apply font-bold;
+}
+
+.alert .alert__text {
+  @apply block sm:inline;
+}
 
 .grid {
   display: grid;
